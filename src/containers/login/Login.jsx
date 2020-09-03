@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
-import {Form, Button, Input} from "antd";
+import {Form, Button, Input, message} from "antd";
 import Logo from './images/logo.png'
+import {connect} from "react-redux";
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
 import './css/login.less'
+import {LoginSend} from "../../API";
 
-export default class Login extends Component {
+class Login extends Component {
   
-  onFinish = () => {
-    alert("登录成功")
+  onFinish = async (values) => {
+    let result = await LoginSend(values)
+    console.log(result)
+      if (result.status === 0) {
+        message.success("登录成功",1)
+        this.props.history.replace('/admin')
+      } else {
+        message.warning("用户名或密码错误",1)
+      }
   };
-  
-  onvaluechange = (changedValue, allValue) =>{
-    console.log(changedValue, allValue)
-  }
   
   render() {
     return (
@@ -27,8 +32,6 @@ export default class Login extends Component {
             name="normal_login"
             className="login-form"
             onFinish={this.onFinish}
-            onValuesChange={this.onvaluechange}
-           form={this.vaildate}
           >
             <Form.Item
               name="username"
@@ -47,7 +50,7 @@ export default class Login extends Component {
                 {type: "string", max: 12, message: '密码最多为12位'},
                 {pattern: /^\w+$/, message: '必须输入的是字母、数字、下划线'}
               ]}
-              
+            
             >
               <Input
                 prefix={<LockOutlined className="site-form-item-icon"/>}
@@ -67,3 +70,7 @@ export default class Login extends Component {
     )
   }
 }
+
+export default connect(
+  state => ({test: state.test})
+)(Login)
