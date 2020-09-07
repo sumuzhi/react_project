@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import {composeWithDevTools} from "redux-devtools-extension";
 
 //引入reducer
-import reducers from './reducers/'
+import reducers from './reducers'
 
 export default createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
 
