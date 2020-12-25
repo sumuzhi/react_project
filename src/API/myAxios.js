@@ -1,8 +1,10 @@
 import axios from 'axios'
 import qs from 'querystring'
 import {message} from "antd"
-import nprogress from 'nprogress'
+import nprogress from 'nprogress'  //顶部进度条
 import 'nprogress/nprogress.css'
+import store from "../redux/store";
+import {createDeleteUserInfoAction} from "../redux/action_creators/login_action";
 
 //自定义axios实列添加拦截器
 const instance = axios.create({
@@ -12,6 +14,10 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(
   (config) => {
+    
+    const {token} = store.getState().userInfo
+    if (token) config.headers.Authorization = 'atguigu_' + token
+    
     nprogress.start()
     // 在发送请求之前做些什么
     /**
@@ -40,9 +46,17 @@ instance.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response.status === 401){  //当token过期后进行重新登录操作
+      store.dispatch(createDeleteUserInfoAction())
+      message.error("身份过期,请重新登录",1)
+    
+    }else{
+    
+    message.error(error.message)
+    
+    }
     // 对响应错误做点什么
     nprogress.done()
-    message.error(error.message)
     return Promise.reject(error);
   });
 

@@ -8,8 +8,9 @@ let initState = {
   token: token || '',
   isLogin: user && token ? true : false
 };
+// createSaveUserInfoAction
 export default function createUserInfoSaveAction(preState = initState, action) {
-  
+ 
   let {type, data} = action
   let newState;
   switch (type) {
