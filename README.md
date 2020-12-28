@@ -93,7 +93,7 @@
     在react高版本中,this.setstate()函数时异步的,在早期的版本中,此函数在生命周期钩子中才是异步的.
     即:在更新状态后,不会立即生效
 
-12.28
+##12.28
 ###setFildsValue坑
 在antd4.x中,不能直接给Item设置初始值,设置之后不能利用setstate去重新赋值,(官方文档有写)
 在自己操作中,利用ref属性,将组件勾出来进行赋值操作,form.setFieldsValue() 利用此方法给item设置值
