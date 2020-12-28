@@ -98,4 +98,16 @@ export const updateProduct = (_id, categoryId, name, desc, price, detail, imgs) 
   imgs
 })
 
+//得到角色列表
+export const getRoleList = () => axios.get(`${BASE_URL}/manage/role/list`)
 
+//新增角色
+export const addRole = (roleName) => axios.post(`${BASE_URL}/manage/role/add`, {roleName})
+
+//修改角色权限
+export const updateRole = (_id, menus, auth_name) => axios.post(`${BASE_URL}/manage/role/update`, {
+  _id,
+  menus,
+  auth_name,
+  auth_time: Date.now()
+})

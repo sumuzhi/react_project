@@ -101,3 +101,7 @@
 富文本编辑器按照官方文档进行操作
 在照片墙中:
     在存入与回显的时候,也是利用钩子去操作相关数据.
+
+##modal
+    <Modal /> 默认关闭后状态不会自动清空, 如果希望每次打开都是新内容，请设置 destroyOnClose。
+    <Modal /> 和 Form 一起配合使用时，设置 destroyOnClose 也不会在 Modal 关闭时销毁表单字段数据，需要设置 <Form preserve={false} />。

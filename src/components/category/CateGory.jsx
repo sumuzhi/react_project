@@ -69,13 +69,11 @@ class CateGory extends Component {
       let categoryList = [...this.state.categoryList]
       categoryList.unshift(data)
       this.setState({
-        categoryList
-      })
-      this.setState({
+        categoryList,
         visible: false,
-      });
+      })
       this.props.saveCategoryToReducer(this.state.categoryList)
-      this.myForm.current.resetFields()
+      // this.myForm.current.resetFields()
     } else {
       message.error(msg, 1)
     }
@@ -91,7 +89,7 @@ class CateGory extends Component {
       this.setState({
         visible: false
       })
-      this.myForm.current.resetFields()
+      // this.myForm.current.resetFields()
       this.getList()
     } else {
       message.error(msg, 1)
@@ -103,7 +101,7 @@ class CateGory extends Component {
     
     //此函数用来校验表单的值,是一个异步函数,会影响到后面的将参数清空方法
     let result = await this.myForm.current.validateFields();
-    
+    // console.log(result)
     if (result) {
       if (this.state.titleType === 'add') await this.toAdd(result.content)
       if (this.state.titleType === 'update') await this.toUpdate(result.content)

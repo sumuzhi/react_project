@@ -183,6 +183,7 @@ class Add_update extends Component {
               label="商品详情"
               wrapperCol={{md: 17}}
             >
+              {/* eslint-disable-next-line react/jsx-pascal-case */}
               <Rich_text_editor ref={this.myRichContent}/>
             </Form.Item>
             
