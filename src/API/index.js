@@ -14,6 +14,9 @@ export const categoryInfo = () => axios.get(`${BASE_URL}/manage/category/list`)
 //请求增加分类
 export const addCategorys = (categoryName) => axios.post(`${BASE_URL}/manage/category/add`, {categoryName})
 
+//根据商品ID获取商品分类信息
+export const getInfoForCategoryById = (categoryId) => axios.get(`${BASE_URL}/manage/category/info`, {params: {categoryId}})
+
 //请求修改某一个分类
 export const updateOneCategory = (categoryId, categoryName) => axios.post(`${BASE_URL}/manage/category/update`, {
   categoryId,
@@ -36,6 +39,9 @@ export const updateProductStatus = (productId, status) => axios.post(`${BASE_URL
 
 //根据商品Id获取商品详细信息
 export const getProductById = (productId) => axios.get(`${BASE_URL}/manage/product/info`, {params: {productId}})
+
+// 根据商品Id删除商品
+export const deleteProductById = (cateGoryId) => axios.get(`${BASE_URL}/manage/category/delete`, {params: {cateGoryId}})
 
 //请求获取天气信息
 export const reqWeather = () => {
@@ -66,3 +72,30 @@ export const searchProduct = (pageNum, pageSize, productType, keyWord) => axios.
     [productType]: keyWord
   }
 })
+
+//通过文件名删除图片
+export const deletePicture = (name) => axios.post(`${BASE_URL}/manage/img/delete`, {name})
+
+
+//添加商品
+export const addProduct = (categoryId, name, desc, price, detail, imgs) => axios.post(`${BASE_URL}/manage/product/add`, {
+  categoryId,
+  name,
+  desc,
+  price,
+  detail,
+  imgs
+})
+
+//更新商品
+export const updateProduct = (_id, categoryId, name, desc, price, detail, imgs) => axios.post(`${BASE_URL}/manage/product/update`, {
+  _id,
+  categoryId,
+  name,
+  desc,
+  price,
+  detail,
+  imgs
+})
+
+

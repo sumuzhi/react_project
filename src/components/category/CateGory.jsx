@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Card, Button, Table, message, Modal, Form, Input} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
-import {categoryInfo, addCategorys, updateOneCategory} from '../../API/index'
+import {connect} from 'react-redux'
+import {categoryInfo, addCategorys, updateOneCategory, deleteProductById} from '../../API/index'
 import {pageSize} from "../../config/config";
+import {createSaveCategoryAction} from "../../redux/action_creators/category_action";
 
 class CateGory extends Component {
   
@@ -17,6 +19,7 @@ class CateGory extends Component {
     currentId: ''
   }
   
+  //! 从服务器上获取分类列表数据
   getList = async () => {
     let result = await categoryInfo()
     this.setState({
@@ -27,21 +30,14 @@ class CateGory extends Component {
       this.setState({
         categoryList: data.reverse()
       })
+      this.props.saveCategoryToReducer(this.state.categoryList)
     } else {
       message.error("请求错误", 0.8)
     }
   }
   
-  onFinish = (value) => {
-    console.log(value)
-  }
-  
   componentDidMount() {
-    this.getList().then(() => {
-    })
-    .catch(() => {
-    
-    })
+    this.getList()
   }
   
   //展示添加弹窗
@@ -64,6 +60,7 @@ class CateGory extends Component {
     });
   };
   
+  //添加分类函数
   toAdd = async (value) => {
     let result = await addCategorys(value)
     let {status, msg, data} = result
@@ -77,13 +74,14 @@ class CateGory extends Component {
       this.setState({
         visible: false,
       });
+      this.props.saveCategoryToReducer(this.state.categoryList)
       this.myForm.current.resetFields()
     } else {
       message.error(msg, 1)
     }
   }
   
-  //修改方法
+  //修改分类方法
   toUpdate = async (value) => {
     // console.log(value,this.state.currentId)
     let result = await updateOneCategory(this.state.currentId, value)
@@ -112,6 +110,17 @@ class CateGory extends Component {
     }
   }
   
+  //删除分类
+  deletecateGory = async (value) => {
+    let result = await deleteProductById(value._id)
+    const {status, msg} = result
+    if (status === 0) {
+      message.success(msg)
+      this.getList()
+    } else
+      message.error(msg)
+  }
+  
   handleCancel = () => {
     this.setState({
       visible: false,
@@ -138,9 +147,14 @@ class CateGory extends Component {
           width: '30%',
           // function(text, record, index) {}
           render: (text, record) => {
-            return <Button type='link' onClick={() => {
-              this.showupdate(record)
-            }}>修改分类</Button>
+            return <div>
+              <Button type='link' onClick={() => {
+                this.showupdate(record)
+              }}>修改分类</Button>
+              <Button type='link' onClick={() => {
+                this.deletecateGory(record)
+              }}>删除分类</Button>
+            </div>
           }
         }
       ]
@@ -193,4 +207,7 @@ class CateGory extends Component {
   }
 }
 
-export default CateGory
+export default connect(
+  state => ({}),
+  {saveCategoryToReducer: createSaveCategoryAction}
+)(CateGory)

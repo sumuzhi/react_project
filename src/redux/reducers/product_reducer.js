@@ -1,6 +1,6 @@
 import {SAVE_PRODUCT} from '../action_types'
 
-export default function saveProductListAction(preState = '', action) {
+export default function saveProductListReducer(preState = '', action) {
   
   let {type, data} = action
   let newState;

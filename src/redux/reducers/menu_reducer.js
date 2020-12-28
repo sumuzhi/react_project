@@ -1,7 +1,7 @@
 import {SAVE_TITLE} from '../action_types'
 
 // createSaveTitleAction
-export default function createSaveTitleAction(preState = '', action) {
+export default function createSaveTitleReducer(preState = '', action) {
   
   let {type, data} = action
   let newState;
