@@ -111,3 +111,18 @@ export const updateRole = (_id, menus, auth_name) => axios.post(`${BASE_URL}/man
   auth_name,
   auth_time: Date.now()
 })
+
+//请求获取所有用户列表
+export const getUsersList = () => axios.get(`${BASE_URL}/manage/user/list`)
+
+//删除用户请求
+export const deleteUser = (userId) => axios.post(`${BASE_URL}/manage/user/delete`, {userId})
+
+//添加用户请求
+export const addUser = (username, password, phone, email, role_id) => axios.post(`${BASE_URL}/manage/user/add`, {
+  username,
+  password,
+  phone,
+  email,
+  role_id
+})

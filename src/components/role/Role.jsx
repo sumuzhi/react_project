@@ -1,8 +1,9 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {Card, Button, Table, message, Modal, Input, Form, Tree} from "antd";
 import {connect} from 'react-redux'
 import {PlusOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
+import {pageSize} from '../../config/config'
 
 import {getRoleList, addRole, updateRole} from "../../API";
 import menuList from '../../config/menu_config'
@@ -128,7 +129,7 @@ class Role extends Component {
         key: 'create_time',
         align: 'center',
         render: (time) => {
-          return dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+          return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : ''
         }
       },
       {
@@ -137,7 +138,7 @@ class Role extends Component {
         key: 'auth_time',
         align: 'center',
         render: (time) => {
-          return time ? dayjs(time).format('YYYY-MM-DD HH:mm:ss') : ''
+          return time ? dayjs(time).format('YYYY-MM-DD HH:mm') : ''
         }
       },
       {
@@ -177,7 +178,7 @@ class Role extends Component {
             dataSource={this.state.roleList}
             columns={columns}
             bordered
-            pagimation={{defaultPageSize: 5}}
+            pagimation={{defaultPageSize: pageSize}}
             rowKey="_id"
           >
           
@@ -185,7 +186,7 @@ class Role extends Component {
         
         </Card>
         
-        {/*新增用户弹窗------------------------------------------------modal*/}
+        {/*新增角色弹窗------------------------------------------------modal*/}
         <Modal
           title="新增角色"
           visible={this.state.isShowAdd}

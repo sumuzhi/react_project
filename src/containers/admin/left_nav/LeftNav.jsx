@@ -14,29 +14,51 @@ const {SubMenu, Item} = Menu;
 
 class LeftNav extends Component {
   
+  hasAuth = (item) => {  //动态生成导航列表
+    // console.log(item)
+    const {username, role} = this.props.menusList
+    const {menus} = role
+    // console.log(menus)
+    if (username === 'admin') {
+      return true
+    } else if (item.children) {
+      return item.children.some((item2) => {   //只要满足一个即返回正,(用于返回一级导航栏)
+        return menus.indexOf(item2.key) !== -1
+      })
+    } else if (!item.children) {
+      return menus.find((item3) => {
+        return item3 === item.key
+      })
+    }
+  }
+  
+  
   createItem = (item) => {
     return item.map((item) => {
-      if (!item.children) {
-        return (
-          <Item key={item.key} onClick={() => {
-            this.props.createTitle(item.title)   //将title交给redux保管
-          }}>
-            <Icon type={item.icon}/>
-            {/*<HomeOutlined />*/}
-            <Link to={item.path}>  {/*点击之后进行跳转组件*/}
-              {item.title}
-            </Link>
-          </Item>
-        )
-      } else {
-        return (
-          <SubMenu key={item.key} title={<span><Icon type={item.icon}/>{item.title}</span>}>
-            {this.createItem(item.children)}
-          </SubMenu>
-        )
+      if (this.hasAuth(item)) {
+        console.log(item)
+        if (!item.children) {
+          return (
+            <Item key={item.key} onClick={() => {
+              this.props.createTitle(item.title)   //将title交给redux保管
+            }}>
+              <Icon type={item.icon}/>
+              {/*<HomeOutlined />*/}
+              <Link to={item.path}>  {/*点击之后进行跳转组件*/}
+                {item.title}
+              </Link>
+            </Item>
+          )
+        } else {
+          return (
+            <SubMenu key={item.key} title={<span><Icon type={item.icon}/>{item.title}</span>}>
+              {this.createItem(item.children)}
+            </SubMenu>
+          )
+        }
       }
+      return
     })
-    
   }
   
   render() {
@@ -64,6 +86,6 @@ class LeftNav extends Component {
 }
 
 export default connect(
-  state => ({}),
+  state => ({menusList: state.userInfo.user}),
   {createTitle: createSaveTitleAction}
 )(withRouter(LeftNav))
